@@ -5,128 +5,610 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="For Doctor 是為醫師與醫療團隊打造的數位工作入口，協助整理資訊、追蹤待辦並提升日常臨床效率。"
+      content="健康檢查報告書中的心臟血管相關內容整理，已移除可辨識個人資料。"
     />
-    <title>For Doctor | 醫療團隊的智慧工作入口</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>心臟血管健康檢查摘要</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f8f7;
+        --panel: #ffffff;
+        --ink: #17211f;
+        --muted: #61706b;
+        --line: #dce6e2;
+        --accent: #166f5b;
+        --accent-soft: #e8f4f0;
+        --warning: #8a5a00;
+        --warning-soft: #fff4d8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui,
+          -apple-system, sans-serif;
+        line-height: 1.65;
+      }
+
+      main {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 72px;
+      }
+
+      header {
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .header-inner {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 34px 0;
+      }
+
+      .kicker {
+        margin: 0 0 10px;
+        color: var(--accent);
+        font-size: 0.86rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin-bottom: 12px;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        line-height: 1.15;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin-bottom: 16px;
+        font-size: clamp(1.45rem, 3vw, 2rem);
+        line-height: 1.25;
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 1.08rem;
+      }
+
+      .lead {
+        max-width: 820px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 1.06rem;
+      }
+
+      .notice {
+        margin: 28px 0;
+        border: 1px solid var(--line);
+        border-left: 5px solid var(--accent);
+        border-radius: 8px;
+        background: var(--panel);
+        padding: 18px 20px;
+      }
+
+      .notice p {
+        margin-bottom: 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin: 28px 0;
+      }
+
+      .card,
+      section {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .metric {
+        display: block;
+        color: var(--accent);
+        font-size: 1.9rem;
+        font-weight: 900;
+        line-height: 1.1;
+      }
+
+      .metric-label {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      section {
+        margin-top: 18px;
+        padding: 24px;
+      }
+
+      .section-note {
+        color: var(--muted);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 8px;
+        font-size: 0.95rem;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-weight: 900;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .two-column {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .highlight {
+        border-radius: 8px;
+        background: var(--warning-soft);
+        color: var(--warning);
+        padding: 14px 16px;
+        font-weight: 800;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      footer {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+        border-top: 1px solid var(--line);
+        padding: 24px 0 36px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 760px) {
+        .grid,
+        .two-column {
+          grid-template-columns: 1fr;
+        }
+
+        section {
+          padding: 18px;
+        }
+
+        table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="For Doctor 首頁">
-        <span class="brand-mark">FD</span>
-        <span>For Doctor</span>
-      </a>
-      <nav class="nav" aria-label="主要導覽">
-        <a href="#features">功能</a>
-        <a href="#workflow">流程</a>
-        <a href="#contact">聯絡</a>
-      </nav>
+    <header>
+      <div class="header-inner">
+        <p class="kicker">De-identified cardiovascular report</p>
+        <h1>心臟血管相關健康檢查摘要</h1>
+        <p class="lead">
+          以下內容整理自健康檢查報告書，僅保留心臟血管相關檢查結果、風險因子與追蹤建議；姓名、生日、性別、身分證號、病歷號、健檢編號、檢查日期與聯絡資訊皆已移除。
+        </p>
+      </div>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Clinical workflow, simplified</p>
-          <h1>讓醫師把時間留給病人，而不是表格與零碎資訊。</h1>
-          <p class="hero-text">
-            For Doctor 協助醫療團隊整理每日任務、快速掌握病患摘要，並把繁瑣流程轉成清楚可執行的下一步。
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#contact">開始了解</a>
-            <a class="button secondary" href="#features">查看功能</a>
-          </div>
-        </div>
+    <main>
+      <div class="notice">
+        <p>
+          這份頁面是報告內容整理，不取代醫師診斷。若有胸悶、胸痛、喘不過氣、心悸加劇或其他不適，應依報告建議至心臟內科追蹤。
+        </p>
+      </div>
 
-        <div class="dashboard-preview" aria-label="For Doctor 工作台預覽">
-          <div class="preview-header">
-            <span>今日門診</span>
-            <strong>24 位病人</strong>
+      <div class="grid" aria-label="重點摘要">
+        <article class="card">
+          <span class="metric">177.6</span>
+          <span class="metric-label">冠狀動脈鈣化指數，屬中度鈣化</span>
+        </article>
+        <article class="card">
+          <span class="metric">4%</span>
+          <span class="metric-label">十年冠心病風險評估，低度風險</span>
+        </article>
+        <article class="card">
+          <span class="metric">26</span>
+          <span class="metric-label">運動心電圖 VA score，顯著心血管疾病可能性低度</span>
+        </article>
+      </div>
+
+      <section>
+        <h2>主要心血管結論</h2>
+        <ul>
+          <li>既往風險因子包含高血壓、心悸、膽固醇過高，報告記載目前於心臟內科定期追蹤並接受藥物治療。</li>
+          <li>本次主訴包含心悸與胸悶；報告建議若仍有胸悶、心悸、胸痛或喘不過氣，至心臟內科門診追蹤。</li>
+          <li>理學檢查中的心臟血管系統未見異常發現。</li>
+          <li>血壓為 112/74 mmHg，脈搏為 60 次/分；因本身有高血壓，報告建議定期測量血壓、注意血壓變化、飲食清淡、避免過鹹、按時服藥並持續追蹤。</li>
+          <li>BMI 為 27.2，腰圍為 90 公分；報告建議控制體重與腰圍，減少精緻澱粉與總熱量攝取。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>心臟科檢查</h2>
+        <div class="two-column">
+          <div>
+            <h3>靜態心電圖</h3>
+            <p>無異常發現。</p>
           </div>
-          <div class="patient-card active">
-            <div>
-              <span class="tag">高優先</span>
-              <h2>王先生，58 歲</h2>
-              <p>糖尿病追蹤，HbA1c 上升，建議調整用藥並安排衛教。</p>
-            </div>
-            <span class="time">09:30</span>
-          </div>
-          <div class="metrics">
-            <div>
-              <span>待確認檢驗</span>
-              <strong>8</strong>
-            </div>
-            <div>
-              <span>已完成摘要</span>
-              <strong>16</strong>
-            </div>
-          </div>
-          <div class="timeline">
-            <span></span>
-            <p>自動整理病歷重點、追蹤項目與下次回診提醒。</p>
+          <div>
+            <h3>履帶式運動心電圖</h3>
+            <ul>
+              <li>運動心電圖測試心肌缺氧為陰性。</li>
+              <li>運動時未出現心律不整。</li>
+              <li>報告記載運動後恢復期晚期有輕微 ST depression 與動態 ST-T 變化，但未達陽性標準。</li>
+              <li>顯著心血管疾病之可能性為低度，VA score 26。</li>
+              <li>報告建議配合症狀與臨床表現判讀，進行風險因子控制並追蹤。</li>
+            </ul>
           </div>
         </div>
       </section>
 
-      <section class="section" id="features">
-        <div class="section-heading">
-          <p class="eyebrow">Features</p>
-          <h2>為臨床現場設計的核心功能</h2>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-card">
-            <span class="icon">01</span>
-            <h3>病患摘要</h3>
-            <p>快速整理主訴、過往病史、檢驗趨勢與醫囑重點，讓看診前準備更有效率。</p>
-          </article>
-          <article class="feature-card">
-            <span class="icon">02</span>
-            <h3>任務追蹤</h3>
-            <p>把檢驗追蹤、轉診、衛教與回診提醒放在同一個清單，降低遺漏風險。</p>
-          </article>
-          <article class="feature-card">
-            <span class="icon">03</span>
-            <h3>團隊協作</h3>
-            <p>讓醫師、護理師與行政人員用一致的資訊節奏工作，減少反覆確認。</p>
-          </article>
+      <section>
+        <h2>心臟超音波</h2>
+        <ul>
+          <li>心臟腔室大小正常。</li>
+          <li>心臟收縮功能良好。</li>
+          <li>極輕度二尖瓣閉鎖不全。</li>
+          <li>極輕度三尖瓣閉鎖不全。</li>
+          <li>極輕度肺動脈瓣閉鎖不全。</li>
+        </ul>
+        <p class="section-note">報告建議每 3 年定期追蹤心臟超音波檢查，並控制體重、腰圍與血脂。</p>
+      </section>
+
+      <section>
+        <h2>十年心血管疾病風險評估</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>結果</th>
+              <th>判讀</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10 Year CHD Risk</td>
+              <td>4%</td>
+              <td>低度風險</td>
+            </tr>
+            <tr>
+              <td>同齡同性比較風險率</td>
+              <td>7%</td>
+              <td>作為相對比較參考</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="section-note">
+          報告提醒：低度或中低風險不代表完全無風險，仍需維持血壓、血脂、血糖在正常範圍，適度運動與紓壓。
+        </p>
+      </section>
+
+      <section>
+        <h2>動脈硬化與血管檢查</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>檢查</th>
+              <th>結果</th>
+              <th>參考值 / 判讀</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>右側動脈阻塞指數 ABI</td>
+              <td>1.23</td>
+              <td>參考值 0.9-1.4</td>
+            </tr>
+            <tr>
+              <td>右側動脈硬度指數 PWV</td>
+              <td>1240 cm/s</td>
+              <td>參考值 &lt; 1400</td>
+            </tr>
+            <tr>
+              <td>左側動脈阻塞指數 ABI</td>
+              <td>1.18</td>
+              <td>參考值 0.9-1.4</td>
+            </tr>
+            <tr>
+              <td>左側動脈硬度指數 PWV</td>
+              <td>1231 cm/s</td>
+              <td>參考值 &lt; 1400</td>
+            </tr>
+            <tr>
+              <td>判讀結果</td>
+              <td colspan="2">兩腳動脈血流良好，無阻塞現象；動脈硬度在正常範圍內。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>頸動脈超音波</h2>
+        <div class="highlight">發現右側鎖骨下動脈中小型硬化斑塊，以及右側總頸動脈球部血管壁肥厚。</div>
+        <ul>
+          <li>報告建議每 2 年複檢頸動脈超音波。</li>
+          <li>建議控制膽固醇。</li>
+          <li>建議每日規律運動並控制體重。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>心血管危險因子檢驗</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>結果</th>
+              <th>參考值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>總膽固醇 T-CHOL</td>
+              <td>189 mg/dL</td>
+              <td>150-200</td>
+            </tr>
+            <tr>
+              <td>三酸甘油脂 TG</td>
+              <td>113 mg/dL</td>
+              <td>30-150</td>
+            </tr>
+            <tr>
+              <td>高密度脂蛋白膽固醇 HDL-C</td>
+              <td>44 mg/dL</td>
+              <td>&gt;= 40</td>
+            </tr>
+            <tr>
+              <td>低密度脂蛋白膽固醇 LDL-C</td>
+              <td>130 mg/dL</td>
+              <td>&lt; 130</td>
+            </tr>
+            <tr>
+              <td>心臟血管疾病危險因子 T-CHOL/HDL</td>
+              <td>4.30</td>
+              <td>&lt; 5</td>
+            </tr>
+            <tr>
+              <td>同半胱胺酸 Homocysteine</td>
+              <td>6.8 umol/L</td>
+              <td>5.5-16.2</td>
+            </tr>
+            <tr>
+              <td>脂蛋白(a) LP(a)</td>
+              <td>3.6 mg/dL</td>
+              <td>0.0-30.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>冠狀動脈鈣化指數 CT</h2>
+        <p class="highlight">心臟冠狀動脈鈣化指數為 177.6，屬於中度鈣化。報告建議至心臟科門診追蹤。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>冠狀動脈部位</th>
+              <th>鈣化評分</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>左冠狀動脈主幹</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>左冠狀動脈前降支</td>
+              <td>22.1</td>
+            </tr>
+            <tr>
+              <td>左冠狀動脈迴旋支</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>右冠狀動脈</td>
+              <td>155.5</td>
+            </tr>
+            <tr>
+              <td>總計</td>
+              <td>177.6</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="section-note">
+          報告說明：冠狀動脈鈣化是冠狀動脈粥狀硬化的指標。鈣化越多，阻塞性冠狀動脈疾病的可能性越高，未來發生心臟事件的風險也會提高。
+        </p>
+      </section>
+
+      <section>
+        <h2>冠狀動脈鈣化分級說明</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>鈣化評分</th>
+              <th>程度</th>
+              <th>報告中的意義與建議</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>無明顯鈣化</td>
+              <td>冠心病機率很低；注意危險因子並規律運動。</td>
+            </tr>
+            <tr>
+              <td>1-10</td>
+              <td>極輕度鈣化</td>
+              <td>低風險；注意危險因子並規律運動。</td>
+            </tr>
+            <tr>
+              <td>11-100</td>
+              <td>輕度鈣化</td>
+              <td>有輕微冠狀動脈狹窄可能；若有危險因子，需積極治療與改善，並由心臟專科醫師診治。</td>
+            </tr>
+            <tr>
+              <td>101-400</td>
+              <td>中度鈣化</td>
+              <td>很可能有中等到高度冠狀動脈狹窄，甚至動脈阻塞；建議心臟專科醫師診治，並積極改善危險因子。</td>
+            </tr>
+            <tr>
+              <td>&gt; 400</td>
+              <td>大量鈣化</td>
+              <td>高度狹窄機會高，屬高風險；建議由心臟專科醫師診治。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>自律神經與心率變異分析</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>結果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>R-R 間距變化</td>
+              <td>正常，15.834</td>
+            </tr>
+            <tr>
+              <td>自律神經偏向</td>
+              <td>嚴重偏向副交感，2.5</td>
+            </tr>
+            <tr>
+              <td>自律神經整體功能</td>
+              <td>普通，5.53 / 0.319</td>
+            </tr>
+            <tr>
+              <td>交感神經功能</td>
+              <td>正常，36.40 / -1.200</td>
+            </tr>
+            <tr>
+              <td>副交感神經功能</td>
+              <td>正常，5.79 / 1.302</td>
+            </tr>
+            <tr>
+              <td>N-N 間距標準差 SDNN</td>
+              <td>正常，34.609</td>
+            </tr>
+            <tr>
+              <td>交感調控</td>
+              <td>低，-0.26</td>
+            </tr>
+            <tr>
+              <td>R 波效度</td>
+              <td>正常，95.17</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="section-note">
+          判讀結果提到疑似重度自律神經失調，可能與疲勞、焦慮、憂鬱、失眠、腸胃不適及心血管疾病高風險狀態相關。報告建議漸進式運動、健康飲食、充足睡眠、休息舒壓，並每年定期追蹤。
+        </p>
+      </section>
+
+      <section>
+        <h2>報告中的追蹤與生活建議</h2>
+        <ul>
+          <li>定期測量血壓，注意血壓變化；飲食宜清淡，避免過鹹，並依原治療計畫按時服藥與追蹤。</li>
+          <li>積極控制血脂，特別是降低 LDL 低密度脂蛋白膽固醇。</li>
+          <li>建議考慮加做心血管代謝評估與血管內皮功能代謝分析。</li>
+          <li>培養規律運動習慣，包含有氧運動；建議每週 3-5 次，每次 30 分鐘以上，循序增加強度、時間與頻率。</li>
+          <li>建議每年定期追蹤運動心電圖。</li>
+          <li>每 3 年定期追蹤心臟超音波。</li>
+          <li>每 2 年定期追蹤頸動脈超音波。</li>
+          <li>控制總熱量攝取，減少精緻澱粉，控制體重與腰圍。</li>
+          <li>如已由專科醫師診斷為心血管相關疾病、糖尿病、高尿酸血症或高血脂，報告建議嚴格控制既有慢性疾病。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>飲食衛教重點</h2>
+        <div class="two-column">
+          <div>
+            <h3>預防高血壓飲食</h3>
+            <ul>
+              <li>限制鈉鹽攝取，每天食鹽建議約 5 公克，減少醃製及再加工食品。</li>
+              <li>少喝湯，避免過多鹽分攝取。</li>
+              <li>多攝取富含鈣與鎂的食物，例如堅果、無糖芝麻糊、地瓜葉、木耳、金針、芥藍菜、莧菜。</li>
+              <li>利用蔥、薑、蒜、番茄、洋蔥、蘿蔔、香菜等天然食材調味，減少調味料添加。</li>
+              <li>多攝取新鮮蔬菜及水果。</li>
+            </ul>
+          </div>
+          <div>
+            <h3>膽固醇偏高飲食</h3>
+            <ul>
+              <li>少攝取肥肉，肉類每餐不超過約一個手掌大的量。</li>
+              <li>少攝取反式脂肪酸食物，例如速食、油炸食物、冷凍食品、甜點、零食、泡麵、乳瑪琳與奶精。</li>
+              <li>每餐吃足量富含抗氧化成分的青菜，例如大蒜、洋蔥、黑木耳、大番茄、綠花椰菜、甜椒。</li>
+              <li>多吃深海魚類，例如鮭魚、鮪魚、沙丁魚、鱈魚、鯖魚、秋刀魚。</li>
+              <li>每天攝取 1-2 湯匙堅果類，例如核桃、杏仁、腰果、南瓜子、芝麻。</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section class="workflow" id="workflow">
-        <div>
-          <p class="eyebrow">Workflow</p>
-          <h2>三步驟整理每日臨床工作</h2>
-        </div>
-        <ol class="steps">
-          <li>
-            <strong>匯入資料</strong>
-            <span>整合門診清單、檢驗結果與追蹤項目。</span>
-          </li>
-          <li>
-            <strong>產生重點</strong>
-            <span>把分散資訊整理成清楚摘要與待辦。</span>
-          </li>
-          <li>
-            <strong>完成追蹤</strong>
-            <span>依照優先順序處理任務，並保留團隊紀錄。</span>
-          </li>
-        </ol>
-      </section>
-
-      <section class="contact" id="contact">
-        <div>
-          <p class="eyebrow">Get started</p>
-          <h2>準備把 For Doctor 放上 GitHub Pages。</h2>
-          <p>
-            這個首頁已經是純靜態網站，可直接部署。你可以把這段換成你的聯絡方式、專案說明或產品 demo 入口。
-          </p>
-        </div>
-        <a class="button primary" href="mailto:hello@example.com">聯絡我們</a>
-      </section>
+      <p class="small">
+        去識別化處理：本頁未放入姓名、生日、性別、身分證號、病歷號、健檢編號、檢查日期、醫院地址或聯絡電話。
+      </p>
     </main>
 
-    <footer class="site-footer">
-      <span>© 2026 For Doctor</span>
-      <span>Built for GitHub Pages</span>
+    <footer>
+      心臟血管健康檢查摘要，內容由健康檢查報告書整理而成。
     </footer>
   </body>
 </html>
