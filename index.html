@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="去識別化心臟血管健檢摘要，供門診醫師快速閱讀。"
+      content="給心臟科醫師看的去識別化完整健檢資料頁，包含大字摘要與完整報告截圖。"
     />
-    <title>心臟血管門診摘要</title>
+    <title>心臟科醫師檢視版</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f4f7f7;
+        --bg: #f3f7f6;
         --paper: #ffffff;
-        --ink: #18211f;
-        --muted: #64736f;
-        --line: #d9e4e1;
-        --accent: #126b58;
-        --accent-soft: #e8f3f0;
-        --alert: #a94f12;
-        --alert-soft: #fff1e8;
-        --blue-soft: #edf4fb;
-        --shadow: 0 18px 50px rgba(18, 107, 88, 0.12);
+        --ink: #111917;
+        --muted: #52625e;
+        --line: #d2dfdb;
+        --accent: #0f6f5b;
+        --accent-soft: #e5f2ef;
+        --alert: #a94c0f;
+        --alert-soft: #fff0e5;
+        --shadow: 0 20px 50px rgba(15, 111, 91, 0.12);
       }
 
       * {
@@ -39,49 +38,48 @@
         font-family:
           "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui,
           -apple-system, sans-serif;
-        line-height: 1.6;
-      }
-
-      img {
-        display: block;
-        max-width: 100%;
+        font-size: 20px;
+        line-height: 1.75;
       }
 
       a {
         color: inherit;
       }
 
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
       .page {
-        width: min(1160px, calc(100% - 32px));
+        width: min(1240px, calc(100% - 32px));
         margin: 0 auto;
       }
 
-      .hero {
-        padding: 34px 0 26px;
+      header {
+        padding: 30px 0 20px;
       }
 
-      .hero-panel,
+      .hero,
       .section,
-      .evidence-card {
+      .report-page {
         border: 1px solid var(--line);
         border-radius: 8px;
         background: var(--paper);
         box-shadow: var(--shadow);
       }
 
-      .hero-panel {
-        display: grid;
-        grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-        gap: 28px;
-        padding: 28px;
+      .hero {
+        padding: 30px;
       }
 
       .kicker {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
         color: var(--accent);
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         font-weight: 900;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
       }
 
@@ -93,47 +91,72 @@
       }
 
       h1 {
-        max-width: 760px;
         margin-bottom: 14px;
-        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-size: clamp(2.4rem, 5vw, 4.2rem);
         line-height: 1.12;
         letter-spacing: 0;
       }
 
       h2 {
         margin-bottom: 14px;
-        font-size: clamp(1.45rem, 3vw, 2rem);
-        line-height: 1.22;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        line-height: 1.2;
       }
 
       h3 {
-        margin-bottom: 8px;
-        font-size: 1.08rem;
+        margin-bottom: 10px;
+        font-size: 1.35rem;
       }
 
       .lead {
-        max-width: 760px;
-        margin-bottom: 20px;
+        max-width: 980px;
+        margin-bottom: 0;
         color: var(--muted);
-        font-size: 1.04rem;
+        font-size: 1.18rem;
       }
 
-      .hero-actions {
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+        gap: 24px;
+        align-items: start;
+      }
+
+      .visit-note {
+        border-radius: 8px;
+        background: var(--alert-soft);
+        padding: 20px;
+      }
+
+      .visit-note strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--alert);
+        font-size: 1.12rem;
+      }
+
+      .visit-note p {
+        margin-bottom: 0;
+      }
+
+      .actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 12px;
+        margin-top: 22px;
       }
 
       .button {
         display: inline-flex;
-        min-height: 42px;
+        min-height: 50px;
         align-items: center;
         justify-content: center;
         border-radius: 8px;
-        padding: 0 16px;
+        padding: 0 18px;
         background: var(--accent);
         color: #fff;
-        font-weight: 800;
+        font-size: 1rem;
+        font-weight: 900;
         text-decoration: none;
       }
 
@@ -143,463 +166,399 @@
         color: var(--accent);
       }
 
-      .doctor-note {
-        border-radius: 8px;
-        background: var(--alert-soft);
-        padding: 18px;
-      }
-
-      .doctor-note strong {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--alert);
-        font-size: 0.95rem;
-      }
-
-      .doctor-note p {
-        margin-bottom: 0;
-        color: #5f3a22;
-      }
-
-      .stat-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
-        margin: 20px 0 0;
-      }
-
-      .stat {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--paper);
-        padding: 16px;
-      }
-
-      .stat .value {
-        display: block;
-        color: var(--accent);
-        font-size: 1.7rem;
-        font-weight: 950;
-        line-height: 1.05;
-      }
-
-      .stat.warning .value {
-        color: var(--alert);
-      }
-
-      .stat span:last-child {
-        display: block;
-        margin-top: 8px;
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-
       main {
         padding-bottom: 70px;
       }
 
       .section {
-        margin-top: 18px;
-        padding: 24px;
+        margin-top: 20px;
+        padding: 28px;
       }
 
-      .summary-grid {
+      .priority-grid {
         display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        gap: 18px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
       }
 
-      .summary-grid > *,
-      .evidence-card {
-        min-width: 0;
+      .priority {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        padding: 18px;
       }
 
-      .problem-list,
+      .priority strong {
+        display: block;
+        color: var(--alert);
+        font-size: 1.6rem;
+        line-height: 1.2;
+      }
+
+      .priority span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.98rem;
+      }
+
       .plain-list {
         margin: 0;
-        padding-left: 1.15rem;
+        padding-left: 1.2rem;
       }
 
-      .problem-list li + li,
       .plain-list li + li {
-        margin-top: 10px;
+        margin-top: 8px;
       }
 
-      .problem-list strong {
-        color: var(--alert);
+      .report-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
       }
 
-      .quick-table {
-        width: 100%;
-        border-collapse: collapse;
-        overflow: hidden;
-        border-radius: 8px;
-        font-size: 0.96rem;
-      }
-
-      .quick-table th,
-      .quick-table td {
-        border-bottom: 1px solid var(--line);
-        padding: 11px 10px;
-        text-align: left;
-        vertical-align: top;
-      }
-
-      .quick-table th {
+      .report-nav a {
+        border: 1px solid var(--line);
+        border-radius: 999px;
         background: var(--accent-soft);
         color: var(--accent);
+        padding: 7px 13px;
+        font-size: 0.95rem;
         font-weight: 900;
+        text-decoration: none;
       }
 
-      .quick-table tr:last-child td {
-        border-bottom: 0;
-      }
-
-      .tag {
-        display: inline-flex;
-        border-radius: 999px;
-        background: var(--blue-soft);
-        color: #24577c;
-        padding: 3px 9px;
-        font-size: 0.82rem;
-        font-weight: 800;
-      }
-
-      .evidence-grid {
+      .report-stack {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+        gap: 22px;
+        margin-top: 20px;
       }
 
-      .evidence-card {
+      .report-page {
         overflow: hidden;
         box-shadow: none;
       }
 
-      .evidence-card figure {
+      .report-page figcaption {
+        border-bottom: 1px solid var(--line);
+        background: var(--accent-soft);
+        padding: 16px 20px;
+      }
+
+      .report-page figcaption strong {
+        display: block;
+        color: var(--accent);
+        font-size: 1.28rem;
+        line-height: 1.35;
+      }
+
+      .report-page figcaption span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.98rem;
+      }
+
+      .report-page figure {
         margin: 0;
       }
 
-      .evidence-card img {
-        width: 100%;
+      .report-page a {
+        display: block;
         background: #fff;
       }
 
-      .evidence-card figcaption {
-        border-bottom: 1px solid var(--line);
-        padding: 14px 16px;
-      }
-
-      .evidence-card figcaption strong {
-        display: block;
-        margin-bottom: 4px;
-      }
-
-      .evidence-card figcaption span {
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-
-      .disclaimer {
-        margin: 20px 0 0;
-        color: var(--muted);
-        font-size: 0.92rem;
+      .notice {
+        margin-top: 18px;
+        border-left: 6px solid var(--accent);
+        border-radius: 8px;
+        background: var(--accent-soft);
+        padding: 16px 18px;
+        color: #244740;
       }
 
       footer {
-        width: min(1160px, calc(100% - 32px));
+        width: min(1240px, calc(100% - 32px));
         margin: 0 auto;
         border-top: 1px solid var(--line);
         padding: 24px 0 36px;
         color: var(--muted);
-        font-size: 0.9rem;
+        font-size: 0.95rem;
       }
 
-      @media (max-width: 900px) {
-        .hero-panel,
-        .summary-grid,
-        .evidence-grid {
+      @media (max-width: 920px) {
+        .hero-grid,
+        .priority-grid {
           grid-template-columns: 1fr;
-        }
-
-        .stat-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
       @media (max-width: 560px) {
-        .page,
-        footer {
-          width: min(100% - 24px, 1160px);
+        body {
+          font-size: 18px;
         }
 
-        .hero-panel,
+        .page,
+        footer {
+          width: min(100% - 20px, 1240px);
+        }
+
+        .hero,
         .section {
           padding: 18px;
         }
 
-        .stat-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .quick-table {
-          display: block;
-          overflow-x: auto;
-          white-space: normal;
+        .report-page figcaption {
+          padding: 14px;
         }
       }
     </style>
   </head>
   <body>
-    <header class="hero">
-      <div class="page">
-        <div class="hero-panel">
+    <header>
+      <div class="page hero">
+        <div class="hero-grid">
           <div>
-            <p class="kicker">For cardiology visit</p>
-            <h1>心臟血管門診摘要</h1>
+            <p class="kicker">Large-print doctor view</p>
+            <h1>心臟科醫師檢視版</h1>
             <p class="lead">
-              健康檢查報告尚未取得紙本時，供門診醫師快速掌握心血管相關異常、風險因子與原報告截圖證據。此頁已移除可辨識個人資料。
+              這一版盡量保留心臟血管相關報告頁與圖檔，並用較大字體排版。所有圖片皆已遮掉可辨識個人資料；PDF 原檔沒有上傳。
             </p>
-            <div class="hero-actions">
-              <a class="button" href="#problems">先看需處理問題</a>
-              <a class="button secondary" href="#evidence">查看報告截圖</a>
+            <div class="actions">
+              <a class="button" href="#full-summary">看摘要報告頁</a>
+              <a class="button secondary" href="#image-report">看圖檔報告頁</a>
             </div>
           </div>
-          <aside class="doctor-note" aria-label="就診重點">
-            <strong>就診目的</strong>
+          <aside class="visit-note">
+            <strong>就診時先請醫師看這幾點</strong>
             <p>
-              請心臟內科評估冠狀動脈鈣化指數 177.6（中度鈣化）、LDL 130、頸動脈/鎖骨下動脈硬化變化，並確認後續治療與追蹤策略。
+              冠狀動脈鈣化指數 177.6（中度鈣化）、LDL-C 130、頸動脈/鎖骨下動脈硬化變化、運動心電圖與心臟超音波圖檔報告。
             </p>
           </aside>
-        </div>
-
-        <div class="stat-grid" aria-label="重點指標">
-          <article class="stat warning">
-            <span class="value">177.6</span>
-            <span>冠狀動脈鈣化指數，屬中度鈣化</span>
-          </article>
-          <article class="stat warning">
-            <span class="value">101-400</span>
-            <span>分級落在中度鈣化區間，報告建議心臟科追蹤</span>
-          </article>
-          <article class="stat warning">
-            <span class="value">LDL 130</span>
-            <span>低密度脂蛋白膽固醇，參考值 &lt;130</span>
-          </article>
-          <article class="stat">
-            <span class="value">ABI 正常</span>
-            <span>雙腳動脈血流良好，未見阻塞現象</span>
-          </article>
         </div>
       </div>
     </header>
 
     <main class="page">
-      <section class="section" id="problems">
-        <h2>需請醫師優先評估</h2>
-        <div class="summary-grid">
-          <div>
-            <ol class="problem-list">
-              <li>
-                <strong>冠狀動脈鈣化：</strong>總分 177.6，右冠狀動脈 155.5、左前降支 22.1；報告分類為中度鈣化。
-              </li>
-              <li>
-                <strong>血脂控制：</strong>LDL-C 130 mg/dL，報告建議積極控制血脂，尤其降低 LDL。
-              </li>
-              <li>
-                <strong>頸部血管變化：</strong>右側鎖骨下動脈中小型硬化斑塊，右側總頸動脈球部血管壁肥厚。
-              </li>
-              <li>
-                <strong>症狀背景：</strong>報告記載有胸悶、心悸；若仍不適，建議至心臟內科追蹤。
-              </li>
-            </ol>
-          </div>
-          <div>
-            <table class="quick-table" aria-label="醫師快速判讀表">
-              <thead>
-                <tr>
-                  <th>檢查</th>
-                  <th>結果</th>
-                  <th>給醫師的重點</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>運動心電圖</td>
-                  <td>心肌缺氧陰性，VA score 26</td>
-                  <td><span class="tag">低度可能性</span> 有動態 ST-T 變化描述，建議臨床相關性評估。</td>
-                </tr>
-                <tr>
-                  <td>心臟超音波</td>
-                  <td>收縮功能良好，極輕度瓣膜閉鎖不全</td>
-                  <td>報告建議每 3 年追蹤心臟超音波。</td>
-                </tr>
-                <tr>
-                  <td>十年 CHD 風險</td>
-                  <td>4%，低度風險</td>
-                  <td>低風險不等於無風險，需合併鈣化與血脂判讀。</td>
-                </tr>
-                <tr>
-                  <td>ABI / PWV</td>
-                  <td>R ABI 1.23、L ABI 1.18；PWV 1240/1231</td>
-                  <td>下肢血流無阻塞，動脈硬度正常範圍。</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
       <section class="section">
-        <h2>建議與追蹤方向</h2>
+        <h2>快速重點</h2>
         <ul class="plain-list">
-          <li>請心臟內科評估冠狀動脈鈣化中度風險是否需要進一步檢查、藥物調整或更密集追蹤。</li>
-          <li>報告建議控制血脂，尤其 LDL-C；也建議控制血壓、體重與腰圍。</li>
-          <li>若有胸悶、胸痛、喘不過氣或心悸持續，應依報告建議回心臟內科門診。</li>
-          <li>建議每年追蹤運動心電圖、每 3 年追蹤心臟超音波、每 2 年追蹤頸動脈超音波。</li>
+          <li>健康檢查摘要與圖檔報告都已整理成圖片，可直接往下滑給醫師看。</li>
+          <li>每張報告圖都可以點開，在手機或平板上放大看細節。</li>
+          <li>為避免洩漏個資，頁首個資列、健檢編號、身分證、生日、檢查日期、地址電話、影像機器疊字都已遮掉。</li>
         </ul>
+        <div class="priority-grid" aria-label="心血管重點指標">
+          <div class="priority">
+            <strong>177.6</strong>
+            <span>冠狀動脈鈣化指數，中度鈣化。</span>
+          </div>
+          <div class="priority">
+            <strong>LDL 130</strong>
+            <span>低密度脂蛋白膽固醇，報告建議控制 LDL。</span>
+          </div>
+          <div class="priority">
+            <strong>VA 26</strong>
+            <span>運動心電圖評估顯著心血管疾病可能性低度。</span>
+          </div>
+          <div class="priority">
+            <strong>頸動脈</strong>
+            <span>右側鎖骨下動脈斑塊、右側總頸動脈球部壁肥厚。</span>
+          </div>
+        </div>
       </section>
 
       <section class="section">
-        <h2>圖檔 PDF 補充：心臟科報告重點</h2>
-        <div class="summary-grid">
-          <div>
-            <h3>運動心電圖圖檔報告</h3>
-            <ul class="plain-list">
-              <li>Bruce protocol，總運動時間 09:29。</li>
-              <li>最大心率 155 bpm，約為預測最大心率 179 bpm 的 86%。</li>
-              <li>最大血壓 187/77 mmHg，最大負荷量 10.80 METS。</li>
-              <li>Max ST Level -2.20 mm in III；ST/HR Index 2.22。</li>
-              <li>心律紀錄提到 VBIG 2、PVC 7、PSVC 5；終止原因為疲勞且達目標心率。</li>
-            </ul>
-          </div>
-          <div>
-            <h3>心臟超音波圖檔報告</h3>
-            <ul class="plain-list">
-              <li>EF(Teich) 76%，左心室收縮功能與摘要頁一致為良好。</li>
-              <li>IVSd 0.763 cm、LVIDd 5 cm、LVIDs 2.75 cm、Ao root diameter 3.1 cm。</li>
-              <li>LA dimension 3.1 cm，LV Mass 136 g，LV Mass Index 69.4 g/m²。</li>
-              <li>Mitral flow：MV E point 87.8 cm/s、MV A point 40.5 cm/s、MV E/A 2.2。</li>
-              <li>Tricuspid flow：Max vel(TR) 157 cm/s、Max PG(TR) 10 mmHg。</li>
-            </ul>
-          </div>
+        <h2>頁面目錄</h2>
+        <div class="report-nav">
+          <a href="#full-summary">摘要報告 15 頁</a>
+          <a href="#image-report">圖檔報告 20 頁</a>
+          <a href="#exercise-ekg">運動心電圖</a>
+          <a href="#echo">心臟超音波</a>
+        </div>
+        <p class="notice">
+          這不是醫療診斷，只是把尚未取得紙本的報告先整理成可閱讀版本，方便門診溝通。
+        </p>
+      </section>
+
+      <section class="section" id="full-summary">
+        <h2>摘要報告：心血管相關頁</h2>
+        <p class="lead">
+          這組來自「健康檢查報告書.pdf」，包含病史、血壓、心臟科檢查、血脂、冠狀動脈鈣化與飲食建議。
+        </p>
+        <div class="report-stack">
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 1：主訴、既往史與心血管風險背景</strong><span>含高血壓、心悸、膽固醇過高與家族史等摘要。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-03.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-03.jpg" alt="去識別化摘要報告第 3 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 2：生命徵象、血壓與理學檢查</strong><span>含血壓、脈搏、BMI、心臟血管系統理學檢查。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-04.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-04.jpg" alt="去識別化摘要報告第 4 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 3：心臟科檢查</strong><span>靜態心電圖、運動心電圖、心臟超音波結果。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-09.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-09.jpg" alt="去識別化摘要報告第 9 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 4：心臟科建議與十年心血管風險</strong><span>含運動心電圖、心超與十年風險評估建議。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-10.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-10.jpg" alt="去識別化摘要報告第 10 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 5：動脈硬化儀與自律神經分析</strong><span>含 ABI、PWV、動脈血流與自律神經結果。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-11.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-11.jpg" alt="去識別化摘要報告第 11 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 6：自律神經建議與頸動脈超音波</strong><span>含頸動脈與鎖骨下動脈硬化變化。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-12.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-12.jpg" alt="去識別化摘要報告第 12 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 7：頸動脈建議與血液常規</strong><span>含頸動脈追蹤建議與部分血液檢查。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-13.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-13.jpg" alt="去識別化摘要報告第 13 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 8：心血管危險因子檢驗</strong><span>總膽固醇、TG、HDL-C、LDL-C、Homocysteine、LP(a)。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-16.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-16.jpg" alt="去識別化摘要報告第 16 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 9：冠狀動脈鈣化與優先處理項目</strong><span>含鈣化指數 177.6 與優先追蹤建議。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-20.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-20.jpg" alt="去識別化摘要報告第 20 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 10：飲食指導</strong><span>含高血壓與膽固醇偏高飲食衛教。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-21.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-21.jpg" alt="去識別化摘要報告第 21 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 11：心臟冠狀動脈鈣化報告目錄</strong><span>中度鈣化總結與建議。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-29.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-29.jpg" alt="去識別化摘要報告第 29 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 12：冠狀動脈鈣化分數表</strong><span>左前降支、右冠狀動脈與總分。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-30.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-30.jpg" alt="去識別化摘要報告第 30 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 13：冠狀動脈鈣化分級表</strong><span>101-400 分中度鈣化區間與建議。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-31.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-31.jpg" alt="去識別化摘要報告第 31 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 14：鈣化影像與輻射劑量說明</strong><span>冠狀動脈鈣化影像與劑量說明。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-32.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-32.jpg" alt="去識別化摘要報告第 32 頁" /></a>
+            </figure>
+          </article>
+          <article class="report-page">
+            <figure>
+              <figcaption><strong>摘要 15：冠狀動脈中度鈣化說明</strong><span>原因、可能後果、預防方式與就醫建議。</span></figcaption>
+              <a href="assets/doctor-view/summary/summary-page-33.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/summary/summary-page-33.jpg" alt="去識別化摘要報告第 33 頁" /></a>
+            </figure>
+          </article>
         </div>
       </section>
 
-      <section class="section" id="evidence">
-        <h2>原報告去識別化截圖</h2>
+      <section class="section" id="image-report">
+        <h2>圖檔報告：運動心電圖與心臟超音波</h2>
         <p class="lead">
-          以下圖片皆由報告裁切或遮罩，只保留檢查區塊；未放入姓名、生日、性別、身分證號、病歷號、健檢編號、檢查日期、地址或電話。
+          這組來自「健康檢查報告書-圖檔.pdf」，包含運動心電圖原始波形與心臟超音波圖檔。影像上緣的機器識別疊字已遮罩。
         </p>
-        <div class="evidence-grid">
-          <article class="evidence-card">
+        <div class="report-stack" id="exercise-ekg">
+          <article class="report-page">
             <figure>
-              <figcaption>
-                <strong>心臟科檢查</strong>
-                <span>靜態心電圖、運動心電圖、心臟超音波結果。</span>
-              </figcaption>
-              <img src="assets/report/cardiac-exam.png" alt="去識別化心臟科檢查截圖" />
+              <figcaption><strong>運動心電圖 1：Tabular Summary</strong><span>Bruce protocol、運動時間、最大心率、最大血壓、METS 與 ST/HR Index。</span></figcaption>
+              <a href="assets/doctor-view/image-report/image-report-page-29.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-29.jpg" alt="去識別化圖檔報告第 29 頁" /></a>
             </figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>冠狀動脈鈣化指數</strong>
-                <span>各冠狀動脈鈣化分數與總分 177.6。</span>
-              </figcaption>
-              <img src="assets/report/calcium-score-table.png" alt="去識別化冠狀動脈鈣化分數表截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 2</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-30.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-30.jpg" alt="去識別化圖檔報告第 30 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>鈣化分級與建議</strong>
-                <span>101-400 分屬中度鈣化，建議心臟科診治。</span>
-              </figcaption>
-              <img src="assets/report/calcium-score-risk-band.png" alt="去識別化冠狀動脈鈣化分級截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 3</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-31.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-31.jpg" alt="去識別化圖檔報告第 31 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>血脂與心血管危險因子</strong>
-                <span>總膽固醇、三酸甘油脂、HDL、LDL、Homocysteine、LP(a)。</span>
-              </figcaption>
-              <img src="assets/report/lipid-risk-factors.png" alt="去識別化心血管危險因子檢驗截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 4</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-32.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-32.jpg" alt="去識別化圖檔報告第 32 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>動脈硬化儀</strong>
-                <span>ABI/PWV 與動脈血流判讀。</span>
-              </figcaption>
-              <img src="assets/report/arterial-screening.png" alt="去識別化動脈硬化儀截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 5</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-33.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-33.jpg" alt="去識別化圖檔報告第 33 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>中度鈣化說明</strong>
-                <span>報告中對冠狀動脈中度鈣化的原因、可能後果與預防方式說明。</span>
-              </figcaption>
-              <img src="assets/report/calcium-explanation.png" alt="去識別化冠狀動脈鈣化說明截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 6</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-34.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-34.jpg" alt="去識別化圖檔報告第 34 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>運動心電圖圖檔摘要</strong>
-                <span>Bruce protocol、最大心率、最大血壓、METS、ST/HR Index 與心律紀錄。</span>
-              </figcaption>
-              <img src="assets/report/exercise-ekg-summary.png" alt="去識別化運動心電圖圖檔摘要截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 7</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-35.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-35.jpg" alt="去識別化圖檔報告第 35 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>運動心電圖波形</strong>
-                <span>圖檔 PDF 中的運動心電圖 ECG strips，已避開頁首與左側識別資訊。</span>
-              </figcaption>
-              <img src="assets/report/exercise-ekg-waveform.png" alt="去識別化運動心電圖波形截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 8</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-36.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-36.jpg" alt="去識別化圖檔報告第 36 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>心臟超音波測值表</strong>
-                <span>EF、心腔尺寸、瓣膜血流與 TR 相關測值。</span>
-              </figcaption>
-              <img src="assets/report/echocardiography-measurements.png" alt="去識別化心臟超音波測值表截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 9</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-37.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-37.jpg" alt="去識別化圖檔報告第 37 頁" /></a></figure>
           </article>
-
-          <article class="evidence-card">
-            <figure>
-              <figcaption>
-                <strong>心臟超音波影像</strong>
-                <span>圖檔 PDF 中的心臟超音波影像，已遮掉影像上緣識別疊字。</span>
-              </figcaption>
-              <img src="assets/report/echocardiography-images.png" alt="去識別化心臟超音波影像截圖" />
-            </figure>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 10</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-38.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-38.jpg" alt="去識別化圖檔報告第 38 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 11</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-39.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-39.jpg" alt="去識別化圖檔報告第 39 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 12</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-40.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-40.jpg" alt="去識別化圖檔報告第 40 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 13</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-41.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-41.jpg" alt="去識別化圖檔報告第 41 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 14</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-42.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-42.jpg" alt="去識別化圖檔報告第 42 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 15</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-43.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-43.jpg" alt="去識別化圖檔報告第 43 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 16</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-44.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-44.jpg" alt="去識別化圖檔報告第 44 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>運動心電圖 17</strong><span>Exercise EKG tracing。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-45.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-45.jpg" alt="去識別化圖檔報告第 45 頁" /></a></figure>
           </article>
         </div>
-        <p class="disclaimer">
-          本頁為就醫溝通摘要，不取代醫師診斷或治療建議。
-        </p>
+
+        <div class="report-stack" id="echo">
+          <article class="report-page">
+            <figure><figcaption><strong>心臟超音波 1：測值表</strong><span>EF、心腔尺寸、瓣膜血流與 TR 相關測值。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-46.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-46.jpg" alt="去識別化圖檔報告第 46 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>心臟超音波 2：影像</strong><span>心臟超音波影像，已遮掉機器識別疊字。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-47.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-47.jpg" alt="去識別化圖檔報告第 47 頁" /></a></figure>
+          </article>
+          <article class="report-page">
+            <figure><figcaption><strong>心臟超音波 3：影像</strong><span>心臟超音波影像，已遮掉機器識別疊字。</span></figcaption><a href="assets/doctor-view/image-report/image-report-page-48.jpg" target="_blank" rel="noopener"><img loading="lazy" src="assets/doctor-view/image-report/image-report-page-48.jpg" alt="去識別化圖檔報告第 48 頁" /></a></figure>
+          </article>
+        </div>
       </section>
     </main>
 
     <footer>
-      去識別化心臟血管健檢摘要，供門診溝通使用。
+      心臟科醫師檢視版。已去識別化；PDF 原檔未上傳。
     </footer>
   </body>
 </html>
